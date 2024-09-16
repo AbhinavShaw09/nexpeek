@@ -3,7 +3,9 @@ import cors from 'cors'
 
 const app = express()
 const port = 3000
+
 app.use(cors())
+app.use(express.json())
 
 const mockData = [
     { id: 1, companyName: "Amazon", ideas: 101 },
@@ -14,7 +16,7 @@ const mockData = [
 ]
 
 app.get('/home', (req, res) => {
-    res.json(mockData)
+    res.json(mockData);
 })
 
 app.listen(port, () => {
