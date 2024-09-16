@@ -15,12 +15,6 @@ import MenuItem from '@mui/material/MenuItem';
 const pages = ['Home'];
 const settings = ['Profile', 'Account','Logout'];
 
-interface DataItem {
-  id: number;
-  companyName: string;
-  ideas: number;
-}
-
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -39,15 +33,6 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  const [data, setData] = React.useState<DataItem[]>([]);
-  React.useEffect(()=>{
-    fetch('http://localhost:3000/home')
-    .then(res=>res.json())
-    .then(data => console.log(setData(data))
-    )
-    .catch(err => console.log(err))
-  },[])
 
   return (
     <>
@@ -167,14 +152,6 @@ function ResponsiveAppBar() {
         </Toolbar>
       </Container>
     </AppBar>
-    
-    <ul>
-        {data.map((item) => (
-          <li key={item.id}>
-            <strong>Company:</strong> {item.companyName} - <strong>Ideas:</strong> {item.ideas}
-          </li>
-        ))}
-      </ul>
     </>
   );
 }
