@@ -15,13 +15,28 @@ interface DataItem {
 
 const CardData = () => {
   const [data, setData] = useState<DataItem[]>([]);
+  const [searchItem, setSearchItem] = useState("");
+  const [filteredData, setFilteredData] = useState<DataItem[]>([]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = e.target.value;
+    setSearchItem(searchTerm);
+
+    const filteredItems = data.filter((company) =>
+      company.companyName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filteredItems);
+  };
 
   useEffect(() => {
     fetch("http://localhost:3000/home")
       .then((res) => res.json())
-      .then((data) => setData(data))
+      .then((data) => {
+        setData(data);
+        setFilteredData(data); 
+      })
       .catch((err) => console.error(err));
-  }, [data]);
+  }, []); 
 
   return (
     <>
@@ -36,7 +51,7 @@ const CardData = () => {
           justifyContent: "center",
         }}
       >
-        <SearchBar data={data} />
+        <SearchBar data={filteredData} handleInputChange={handleInputChange} />
         <Box
           component="ul"
           sx={{
@@ -48,7 +63,7 @@ const CardData = () => {
             justifyContent: "center",
           }}
         >
-          {data.map((item) => (
+          {filteredData?.map((item) => (
             <li key={item.id}>
               <Card sx={{ minWidth: 275 }}>
                 <CardContent>
@@ -72,3 +87,4 @@ const CardData = () => {
 };
 
 export default CardData;
+
